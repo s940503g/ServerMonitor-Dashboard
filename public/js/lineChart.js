@@ -39,11 +39,34 @@ var svg = d3.select("body").append("svg")
 
 d3.json(url, function(data) {
 
-	x.domain(d3.extent(data, function(d) { return formatDate.parse(d.time); }));
-	y.domain(d3.extent(data, function(d) { return d.ping; }));
+        x.domain(d3.extent(data, function(d) { return formatDate.parse(d.time); }));
+        y.domain(d3.extent(data, function(d) { return d.ping; }));
 
 
-	svg.append("g")
-		.attr("class", "x axis")
-		.attr("transform", "translate(0," + height + ")")
-		.call(xAxis);
+        svg.append("g")
+                .attr("class", "x axis")
+                .attr("transform", "translate(0," + height + ")")
+                .call(xAxis);
+
+        svg.append("g")
+                .attr("class", "y axis")
+                .call(yAxis)
+                .append("text")
+                .attr("transform", "rotate(-90)")
+                .attr("y", 6)
+                .attr("dy", ".71em")
+                .style("text-anchor", "end")
+                .text("ping (ms)");
+
+        svg.append("path")
+                .datum(data)
+                .attr("class", "area")
+                .attr("d", area);
+
+        svg.append("path")
+                .datum(data)
+                .attr("class", "line")
+                .attr("d", line);
+
+
+});
