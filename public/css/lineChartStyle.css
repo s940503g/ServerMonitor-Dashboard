@@ -12,13 +12,17 @@ body {
 .x.axis path {
   display: none;
 }
-
+/*
 .line {
   fill: none;
   stroke: steelblue;
   stroke-width: 1.5px;
 }
+*/
 .area {
+/*
     fill: lightsteelblue;
+*/
     stroke-width: 0;
+	opacity:0.1;
 }

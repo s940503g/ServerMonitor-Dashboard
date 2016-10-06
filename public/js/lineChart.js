@@ -1,4 +1,5 @@
-var url = 'http://52.68.171.13:8000/api/52-32-63-252/2016-09-24';
+var url = 'http://52.68.171.13:8000/api/52-32-63-252/2016-10-06'; 
+var url2 = 'http://52.68.171.13:8000/api/54-240-16-0/2016-10-06';
 
 var margin = {top: 20, right: 20, bottom: 30, left: 50},
     width = 1000 - margin.left - margin.right,
@@ -37,36 +38,41 @@ var svg = d3.select("body").append("svg")
   	.append("g")
     	.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-d3.json(url, function(data) {
+y.domain([0,400]);
+x.domain([formatDate.parse("19:00:00"), formatDate.parse("21:00:00")]);
 
-        x.domain(d3.extent(data, function(d) { return formatDate.parse(d.time); }));
-        y.domain(d3.extent(data, function(d) { return d.ping; }));
+svg.append("g")
+	.attr("class", "x axis")
+	.attr("transform", "translate(0," + height + ")")
+	.call(xAxis);
 
+svg.append("g")
+	.attr("class", "y axis")
+	.call(yAxis)
+	.append("text")
+	.attr("transform", "rotate(-90)")
+	.attr("y", 6)
+	.attr("dy", ".71em")
+	.style("text-anchor", "end")
+	.text("ping (ms)");
 
-        svg.append("g")
-                .attr("class", "x axis")
-                .attr("transform", "translate(0," + height + ")")
-                .call(xAxis);
+addServer(url, "cyan");
+addServer(url2, "red");
 
-        svg.append("g")
-                .attr("class", "y axis")
-                .call(yAxis)
-                .append("text")
-                .attr("transform", "rotate(-90)")
-                .attr("y", 6)
-                .attr("dy", ".71em")
-                .style("text-anchor", "end")
-                .text("ping (ms)");
+function addServer(url, color) {
+	d3.json(url, function(data) {
 
-        svg.append("path")
-                .datum(data)
-                .attr("class", "area")
-                .attr("d", area);
+		svg.append("path")
+			.datum(data)
+			.attr("class", "area")
+			.attr("d", area)
+			.attr("fill", color);
 
-        svg.append("path")
-                .datum(data)
-                .attr("class", "line")
-                .attr("d", line);
-
-
-});
+		svg.append("path")
+			.datum(data)
+			.attr("class", "line")
+			.attr("d", line)
+			.attr("stroke", color)
+			.attr("fill", "none");
+	});
+}
